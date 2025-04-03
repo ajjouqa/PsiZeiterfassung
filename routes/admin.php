@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\Admin\RegisterController;
 
 
 
-Route::middleware('guest')->prefix('admin')->group( function () {
+Route::prefix('admin')->middleware(['guest:admin'])->group( function () {
 
     Route::get('login', [LoginController::class, 'create'])->name('admin.login');
     Route::post('login', [LoginController::class, 'store']);
@@ -18,7 +18,7 @@ Route::middleware('guest')->prefix('admin')->group( function () {
 });
 
 
-Route::middleware('auth:admin')->prefix('admin')->group( function () {
+Route::prefix('admin')->middleware(['auth:admin'])->group( function () {
     Route::post('logout', [App\Http\Controllers\Auth\Admin\LoginController::class, 'destroy'])->name('admin.logout');
     Route::view('/dashboard','admin.dashboard.index')->name('admin.dashboard');
 });
