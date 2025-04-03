@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             'profile_picture' => fake()->imageUrl(),
             'status' => 'active',
         ]);
-        DB::table('Azubi')->insert([
+        DB::table('Azubis')->insert([
             'name' => 'azubi',
             'email' => fake()->unique()->safeEmail(),
             'password' => bcrypt('azubi'),

@@ -7,11 +7,23 @@ use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     */
-    protected function redirectTo(Request $request): ?string
+
+    protected function redirectTo($request)
     {
-        return $request->expectsJson() ? null : route('login');
+        if (!$request) {
+            return null;
+        }
+
+        if ($request->expectsJson()) {
+            return null;
+        }
+
+        if ($request->is('azubi/*')) {
+            return route('azubi.login');
+        } elseif ($request->is('admin/*')) {
+            return route('admin.login');
+        }
+
+        return route('mitarbeiter.login'); 
     }
 }
