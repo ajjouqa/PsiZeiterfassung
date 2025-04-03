@@ -18,6 +18,11 @@
 		</div>
 		<!-- /main-content -->
 @endsection
+
+@section('logout')
+	@include('azubi.dashboard.logout')
+@endsection
+
 @section('js')
 <!--Internal  Chart.bundle js -->
 <script src="{{URL::asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
