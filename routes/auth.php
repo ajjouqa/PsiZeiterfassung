@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('mitarbeiter')->middleware(['guest:web'])->group(function () {
@@ -26,5 +27,6 @@ Route::prefix('mitarbeiter')->middleware(['guest:web'])->group(function () {
 Route::prefix('mitarbeiter')->middleware(['auth:web'])->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('mitarbeiter.logout');
-    Route::view('dashboard','mitarbeiter.dashboard.index');
+    Route::get('dashboard',[DashboardController::class,'MitarbeiterDashboard'])->name('mitarbeiter.dashboard');
+    
 });

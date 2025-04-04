@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Admin\LoginController;
 use App\Http\Controllers\Auth\Admin\RegisterController;
@@ -19,6 +20,6 @@ Route::prefix('admin')->middleware(['guest:admin'])->group( function () {
 
 
 Route::prefix('admin')->middleware(['auth:admin'])->group( function () {
-    Route::post('logout', [App\Http\Controllers\Auth\Admin\LoginController::class, 'destroy'])->name('admin.logout');
-    Route::view('/dashboard','admin.dashboard.index')->name('admin.dashboard');
+    Route::post('logout', [LoginController::class, 'destroy'])->name('admin.logout');
+    Route::get('dashboard',[DashboardController::class,'AdminDashboard'])->name('admin.dashboard');
 });

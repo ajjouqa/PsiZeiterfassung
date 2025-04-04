@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Auth\Azubi\LoginController;
 use App\Http\Controllers\Auth\Azubi\RegisterController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,5 +18,5 @@ Route::middleware(['guest:azubi'])->prefix('azubi')->group( function () {
 });
 Route::middleware('auth:azubi')->prefix('azubi')->group( function () {
     Route::post('logout', [LoginController::class, 'destroy'])->name('azubi.logout');
-    Route::view('/dashboard','azubi.dashboard.index')->name('azubi.dashboard');
+    Route::get('dashboard',[DashboardController::class,'AzubiDashboard'])->name('azubi.dashboard');
 });
