@@ -19,6 +19,7 @@ class LogLogoutListener
 
         $todayLog = Logs::where('user_id', $event->user_id)
             ->whereDate('login_time', now()->toDateString())
+            ->where('role', $event->role)
             ->latest()
             ->first();
 

@@ -16,10 +16,12 @@ class LogoutEvent
 
     public $user_id;
     public $logout_time;
+    public $role;
 
-    public function __construct($user_id)
+    public function __construct($user_id, $role)
     {
         $this->user_id = $user_id;
         $this->logout_time = now(); 
+        $this->role = $role;
     }
 }

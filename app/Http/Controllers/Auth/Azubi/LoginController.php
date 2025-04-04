@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth\Azubi;
 
+use App\Events\LoginEvent;
+use App\Events\LogoutEvent;
+use App\Traits\DetectsUserRole;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    use DetectsUserRole;
     public function create(): View
     {
         return view('azubi.auth.login');
@@ -33,11 +37,16 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        $role = $this->detectUserRole();
+
+        event(new LoginEvent(Auth::guard('azubi')->user()->id, $role));
+
         return redirect()->intended(RouteServiceProvider::AZUBI_DASHBOARD);
     }
 
     public function destroy(Request $request): RedirectResponse
     {
+        event(new LogoutEvent(Auth::guard('azubi')->user()->id, $this->detectUserRole()));
         Auth::guard('azubi')->logout();
 
         $request->session()->invalidate();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Admin;
 
 use App\Events\LoginEvent;
 use App\Events\LogoutEvent;
+use App\Traits\DetectsUserRole;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    use DetectsUserRole;
     public function create(): View
     {
         return view('admin.auth.login');
@@ -36,18 +38,7 @@ class LoginController extends Controller
         
         $request->session()->regenerate();
 
-        $role = null;
-
-        if(Auth::guard('admin')->check())
-        {
-            $role = "admin";
-        }elseif(Auth::guard('azubi')->check())
-        {
-            $role = "azubi";
-        }elseif(Auth::guard('mitarbeiter')->check())
-        {
-            $role = "mitarbeiter";
-        }
+        $role = $this->detectUserRole();
         
         event(new LoginEvent(Auth::guard('admin')->user()->id, $role));
 
@@ -56,7 +47,7 @@ class LoginController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        event(new LogoutEvent(Auth::guard('admin')->user()->id));
+        event(new LogoutEvent(Auth::guard('admin')->user()->id, $this->detectUserRole()));
 
         Auth::guard('admin')->logout();
 

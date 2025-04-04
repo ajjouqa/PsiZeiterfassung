@@ -16,14 +16,14 @@ class LogLoginListener
 
         $todayLog = Logs::where('user_id', $event->user_id)
         ->whereDate('login_time', now()->toDateString())
-        ->whereNull('logout_time')
-        ->latest()
+        ->where('role', $event->role)
         ->first();
-
-        if(!$todayLog || $todayLog->logout_time !== null) {
+        
+        if (!$todayLog){
             Logs::create([
                 'user_id' => $event->user_id,
                 'login_time' => $event->loginTime,
+                'logout_time' => now()->endOfDay(),
                 'role' => $event->role,
             ]);
         }
