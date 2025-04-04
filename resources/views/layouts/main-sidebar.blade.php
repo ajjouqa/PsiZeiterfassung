@@ -34,8 +34,8 @@
 		@if (Auth::guard('admin')->check())
 			<ul class="side-menu">
 				<li class="slide">
-					<a class="side-menu__item" href="{{route('admin.dashboard')}}"><svg
-							xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24">
+					<a class="side-menu__item" href="{{route('admin.dashboard')}}"><svg xmlns="http://www.w3.org/2000/svg"
+							class="side-menu__icon" viewBox="0 0 24 24">
 							<path d="M0 0h24v24H0V0z" fill="none" />
 							<path d="M5 5h4v6H5zm10 8h4v6h-4zM5 17h4v2H5zM15 5h4v2h-4z" opacity=".3" />
 							<path
@@ -43,15 +43,24 @@
 						</svg><span class="side-menu__label">Index</span>
 					</a>
 				</li>
+				<li class="slide">
+					<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page = '#') }}">
+						<span class="side-menu__icon  mb-3"><i class="mdi mdi-account "></i></span><span class="side-menu__label">Users</span>
+						<i class="angle fe fe-chevron-down"></i>
+					</a>
+					<ul class="slide-menu">
+						<li><a class="slide-item" href="{{ route('admin.admin') }}">Admins</a></li>
+					</ul>
+				</li>
 			</ul>
 
-		<!-----------------------------------------------Azubi---------------------------------------------------------->
+			<!-----------------------------------------------Azubi---------------------------------------------------------->
 
 		@elseif (Auth::guard('azubi')->check())
 			<ul class="side-menu">
 				<li class="slide">
-					<a class="side-menu__item" href="{{ route('azubi.dashboard') }}"><svg
-							xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24">
+					<a class="side-menu__item" href="{{ route('azubi.dashboard') }}"><svg xmlns="http://www.w3.org/2000/svg"
+							class="side-menu__icon" viewBox="0 0 24 24">
 							<path d="M0 0h24v24H0V0z" fill="none" />
 							<path d="M5 5h4v6H5zm10 8h4v6h-4zM5 17h4v2H5zM15 5h4v2h-4z" opacity=".3" />
 							<path
@@ -93,13 +102,13 @@
 
 			</ul>
 
-		<!-----------------------------------------------Mitarbeiter---------------------------------------------------------->
+			<!-----------------------------------------------Mitarbeiter---------------------------------------------------------->
 
 		@elseif(Auth::guard(name: 'web')->check())
-		<ul class="side-menu">
+			<ul class="side-menu">
 				<li class="slide">
-					<a class="side-menu__item" href="{{ route('azubi.dashboard') }}"><svg
-							xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24">
+					<a class="side-menu__item" href="{{ route('azubi.dashboard') }}"><svg xmlns="http://www.w3.org/2000/svg"
+							class="side-menu__icon" viewBox="0 0 24 24">
 							<path d="M0 0h24v24H0V0z" fill="none" />
 							<path d="M5 5h4v6H5zm10 8h4v6h-4zM5 17h4v2H5zM15 5h4v2h-4z" opacity=".3" />
 							<path
