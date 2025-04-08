@@ -18,3 +18,4 @@
 <link href="{{URL::asset('assets/css/style-dark.css')}}" rel="stylesheet">
 <!---Skinmodes css-->
 <link href="{{URL::asset('assets/css/skin-modes.css')}}" rel="stylesheet" />
+<meta name="csrf-token" content="{{ csrf_token() }}">

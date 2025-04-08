@@ -1,7 +1,4 @@
 <?php
-// test-xmpp.php
-
-// Simple test class for XMPP communication
 class TestXMPP {
     protected $server;
     protected $username;
@@ -21,7 +18,7 @@ class TestXMPP {
         echo "Testing XMPP connection to {$this->server}:{$this->port}\n";
         echo "Username: {$this->username}\n\n";
 
-        // Open connection with timeout
+  
         echo "Opening connection... ";
         $connection = @fsockopen($this->server, $this->port, $errno, $errstr, $this->timeout);
         if (!$connection) {
@@ -30,7 +27,6 @@ class TestXMPP {
         }
         echo "SUCCESS!\n\n";
 
-        // Set stream timeout
         stream_set_timeout($connection, $this->timeout);
 
         // Start XMPP stream
@@ -113,8 +109,8 @@ class TestXMPP {
 
 // Connection parameters
 $server = '127.0.0.1';
-$username = 'mustapha'; // Just the username part, not the full JID
-$password = 'ajjouqa'; // Replace with your actual password
+$username = 'admin'; // Just the username part, not the full JID
+$password = 'admin'; // Replace with your actual password
 
 // Run the test
 $tester = new TestXMPP($server, $username, $password);

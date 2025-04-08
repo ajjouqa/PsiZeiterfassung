@@ -16,7 +16,7 @@ class Azubi extends Authenticatable
         'name',
         'email',
         'password',
-        'adress',
+        'address',
         'phone',
         'profile_picture',
         'status',

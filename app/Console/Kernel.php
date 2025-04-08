@@ -4,15 +4,22 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\ProcessXmppHangingSessions;
 
 class Kernel extends ConsoleKernel
 {
     /**
      * Define the application's command schedule.
      */
+    protected $commands = [
+        ProcessXmppHangingSessions::class,
+    ];
+
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('xmpp:process-hanging-sessions')->everyMinute();
+        $schedule->command('xmpp:cleanup-sessions')->everyFiveMinutes();
+        
     }
 
     /**
