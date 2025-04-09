@@ -15,23 +15,24 @@ class UserController extends Controller
 {
     public function admins()
     {
-        $admins = Admin::all();
+        $admins = Admin::query()
+            ->with('xmppUserMapping')
+            ->get();
+        
         return view('users.admin',compact('admins'));
     }
 
     public function azubis()
     {
         $azubis = Azubi::all();
-        return view('users.admin',compact('azubis'));
+        return view('users.azubi',compact('azubis'));
     }
 
     public function mitarbeiter()
     {
-        $mitarbeiter = User::all();
-        return view('users.admin',compact('mitarbeiter'));
+        $mitarbeiters = User::all();
+        return view('users.mitarbeiter',compact('mitarbeiters'));
     }
-
-
 
 
 

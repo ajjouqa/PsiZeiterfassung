@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\XmppAuthService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class XmppHeartbeatController extends Controller
 {
@@ -19,7 +20,20 @@ class XmppHeartbeatController extends Controller
 
     public function update(Request $request)
     {
-        $user = $request->user('azubi');
+        if(Auth::guard('azubi')->check()) {
+            $user = $request->user('azubi');
+            $role = 'azubi';
+        } elseif(Auth::guard('web')->check()) {
+            $user = $request->user('web');
+            $role = 'mitarbeiter';
+        } elseif(Auth::guard('admin')->check()) {
+            $user = $request->user('admin');
+            $role = 'admin';
+        } else {    
+            $role = null;
+            $user = null;
+        }
+
         if (!$user) {
             Log::error('XMPP heartbeat failed: no authenticated azubi user');
             return response()->json(['error' => 'Unauthenticated'], 401);
@@ -28,7 +42,7 @@ class XmppHeartbeatController extends Controller
         // Update last activity timestamp
         Session::put('xmpp_last_activity', now()->timestamp);
         
-        $mapping = $this->xmppAuthService->getUserMapping('azubi', $user->id);
+        $mapping = $this->xmppAuthService->getUserMapping($role, $user->id);
         if ($mapping) {
             // If user is marked as unavailable but is active, update to available
             if ($mapping->current_presence === 'unavailable') {
@@ -54,14 +68,29 @@ class XmppHeartbeatController extends Controller
 
     public function disconnect(Request $request)
     {
-        $user = $request->user('azubi');
+
+        if(Auth::guard('azubi')->check()) {
+            $user = $request->user('azubi');
+            $role = 'azubi';
+        } elseif(Auht::guard('web')->check()) {
+            $user = $request->user('web');
+            $role = 'mitarbeiter';
+        } elseif(Auth::guard('admin')->check()) {
+            $user = $request->user('admin');
+            $role = 'admin';
+        } else {
+            $role = null;
+        }
+
+        
+
         if (!$user) {
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
         
         Log::info("Browser disconnect notification received for user ID: {$user->id}");
         
-        $mapping = $this->xmppAuthService->getUserMapping('azubi', $user->id);
+        $mapping = $this->xmppAuthService->getUserMapping($role, $user->id);
         if (!$mapping) {
             return response()->json(['error' => 'No XMPP mapping found'], 404);
         }

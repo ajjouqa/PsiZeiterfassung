@@ -584,7 +584,7 @@ class XmppAuthService
     public function processHangingSessions($userType = null, $userId = null)
     {
         // Build query to find users with active sessions
-        $query = XmppUserMapping::where('current_presence', '!=', 'unavailable')
+        $query = XmppUserMapping::where('current_presence', 'available')
             ->where('is_active', true);
 
         if ($userType) {

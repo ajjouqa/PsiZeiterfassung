@@ -48,6 +48,7 @@
             
             $this->info("Processed {$processed} hanging session(s)");
             
+            
             return 0;
         }
     }

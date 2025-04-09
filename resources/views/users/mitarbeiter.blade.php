@@ -33,40 +33,30 @@
 									<th class="border-bottom-0">Name</th>
 									<th class="border-bottom-0">Phone</th>
 									<th class="border-bottom-0 w-25">Adress</th>
-									<th class="border-bottom-0">Current Status</th>
-									<th class="border-bottom-0">Account Status</th>
+									<th class="border-bottom-0">Status</th>
 									<th class="border-bottom-0">Created at</th>
 									<th class="border-bottom-0">Action</th>
 								</tr>
 							</thead>
 							<tbody>
-								@if ($admins->isEmpty())
+								@if ($mitarbeiters->isEmpty())
 									<tr>
 										<td colspan="5" class="text-center">No admins found</td>
 									</tr>
 								@else
-									@foreach ($admins as $admin)
+									@foreach ($mitarbeiters as $mitarbeiter)
 										<tr>
-											<td>{{ $admin->name }}</td>
-											<td>{{ $admin->phone }}</td>
-											<td>{{ $admin->address }}</td>
-
-											
+											<td>{{ $mitarbeiter->name }}</td>
+											<td>{{ $mitarbeiter->phone }}</td>
+											<td>{{ $mitarbeiter->address }}</td>
 											<td>
-												@if ($admin->xmppUserMapping->current_presence == 'available')
-													<span class="badge badge-success">Online</span>
-												@else
-													<span class="badge badge-danger">Offline</span>
-												@endif
-											</td>
-											<td>
-												@if ($admin->status == 'active')
+												@if ($mitarbeiter->status == 'active')
 													<span class="badge badge-success">Active</span>
 												@else
 													<span class="badge badge-danger">Inactive</span>
 												@endif
 											</td>
-											<td>{{ $admin->created_at }}</td>
+											<td>{{ $mitarbeiter->created_at }}</td>
 											<td>
 												<a href="" class="btn btn-primary">Edit</a>
 												<form action="" method="POST" style="display:inline;">

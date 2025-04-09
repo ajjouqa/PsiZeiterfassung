@@ -42,4 +42,5 @@ class XmppPresenceLog extends Model
     {
         return $this->belongsTo(XmppUserMapping::class, 'xmpp_username', 'xmpp_username');
     }
+
 }

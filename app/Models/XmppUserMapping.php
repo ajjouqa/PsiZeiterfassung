@@ -15,6 +15,8 @@ class XmppUserMapping extends Model
         'xmpp_username',
         'user_type',
         'user_id',
+        'is_active',
+        'current_presence',
     ];
 
 
@@ -23,6 +25,7 @@ class XmppUserMapping extends Model
         'last_login' => 'datetime',
     ];
 
+    
     public function user()
     {
         if ($this->user_type === 'admin') {
@@ -35,4 +38,6 @@ class XmppUserMapping extends Model
         
         return null;
     }
+
+    
 }

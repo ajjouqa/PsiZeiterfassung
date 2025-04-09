@@ -50,6 +50,8 @@
 					</a>
 					<ul class="slide-menu">
 						<li><a class="slide-item" href="{{ route('admin.admin') }}">Admins</a></li>
+						<li><a class="slide-item" href="{{ route('admin.mitarbeiter') }}">Mitarbeiters</a></li>
+						<li><a class="slide-item" href="{{ route('admin.azubi') }}">Azubis</a></li>
 						<li><a class="slide-item" href="{{ route('admin.create.user') }}">Add User</a></li>
 					</ul>
 				</li>

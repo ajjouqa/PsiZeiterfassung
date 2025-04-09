@@ -31,4 +31,10 @@ class Admin extends Authenticatable
         'password' => 'hashed',
     ];
 
+
+    public function xmppUserMapping()
+    {
+        return $this->hasOne(XmppUserMapping::class, 'user_id', 'id');
+    }
+
 }

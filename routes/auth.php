@@ -27,6 +27,5 @@ Route::prefix('mitarbeiter')->middleware(['guest:web'])->group(function () {
 Route::prefix('mitarbeiter')->middleware(['auth:web'])->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('mitarbeiter.logout');
-    Route::get('dashboard',[DashboardController::class,'MitarbeiterDashboard'])->name('mitarbeiter.dashboard');
     
 });

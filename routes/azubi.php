@@ -18,5 +18,4 @@ Route::middleware(['guest:azubi'])->prefix('azubi')->group( function () {
 });
 Route::middleware('auth:azubi')->prefix('azubi')->group( function () {
     Route::post('logout', [LoginController::class, 'destroy'])->name('azubi.logout');
-    Route::get('dashboard',[DashboardController::class,'AzubiDashboard'])->name('azubi.dashboard');
 });
