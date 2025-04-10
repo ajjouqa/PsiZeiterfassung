@@ -13,12 +13,14 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ProcessXmppHangingSessions::class,
+        \App\Console\Commands\GenerateDailyPresenceSummaries::class,
     ];
 
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('xmpp:process-hanging-sessions')->everyMinute();
         $schedule->command('xmpp:cleanup-sessions')->everyFiveMinutes();
+        $schedule->command('presence:generate-daily')->dailyAt('00:05');
         
     }
 

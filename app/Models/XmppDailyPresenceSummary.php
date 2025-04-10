@@ -34,13 +34,18 @@ class XmppDailyPresenceSummary extends Model
         // This relationship will need to be adjusted based on your actual user models
         if ($this->user_type === 'App\Models\User') {
             return $this->belongsTo(User::class, 'user_id');
-        }elseif ($this->user_type === 'App\Models\Admin') {
+        } elseif ($this->user_type === 'App\Models\Admin') {
             return $this->belongsTo(Admin::class, 'user_id');
         } elseif ($this->user_type === 'App\Models\Azubi') {
             return $this->belongsTo(Azubi::class, 'user_id');
         }
-        
+
         // Add other user type relationships as needed
         return null;
+    }
+
+    public function status()
+    {
+        return $this->hasOne(DailyStatus::class, 'daily_summary_id');
     }
 }

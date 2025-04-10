@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\Azubi;
+use App\Models\User;
+use App\Models\XmppUserMapping;
 use Illuminate\Http\Request;
 use App\Services\XmppAuthService;
 use Carbon\Carbon;
@@ -20,6 +24,8 @@ class XmppPresenceController extends Controller
      */
     public function showPresenceLogs(Request $request, $userType, $userId)
     {
+
+        $userId = decrypt($userId);
         $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : null;
         $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : null;
         
@@ -27,14 +33,26 @@ class XmppPresenceController extends Controller
         
         $onlineTime = $this->xmppAuthService->calculateOnlineTime($userType, $userId, $startDate, $endDate);
         
-        return view('xmpp.presence_logs', compact('logs', 'onlineTime', 'userType', 'userId'));
+        if($userType == 'azubi') {
+            $username = Azubi::findOrFail($userId)->name;
+        } elseif($userType == 'admin') {
+            $username = Admin::findOrFail($userId)->name;
+        } else {
+            $username = User::findOrFail($userId)->name;
+        }
+
+        $status = XmppUserMapping::where('user_id', $userId)->first()?->current_presence;
+
+        return view('xmpp.presence_logs', compact('logs', 'onlineTime', 'userType', 'username', 'status'));
     }
     
     /**
      * Show user's daily presence summaries
      */
+
     public function showDailySummaries(Request $request, $userType, $userId)
     {
+        $userId = decrypt($userId);
         $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : Carbon::now()->subDays(30);
         $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : Carbon::now();
         
@@ -45,9 +63,17 @@ class XmppPresenceController extends Controller
         $totalSessions = $summaries->sum('session_count');
         $formattedTotal = $this->formatTimeInterval($totalSeconds);
         
+        if($userType == 'azubi') {
+            $username = Azubi::findOrFail($userId)->name;
+        } elseif($userType == 'admin') {
+            $username = Admin::findOrFail($userId)->name;
+        } else {
+            $username = User::findOrFail($userId)->name;
+        }
+        $status = XmppUserMapping::where('user_id', $userId)->first()?->current_presence;
         return view('xmpp.daily_summaries', compact(
             'summaries', 'userType', 'userId', 'startDate', 'endDate', 
-            'totalSeconds', 'totalSessions', 'formattedTotal'
+            'totalSeconds', 'totalSessions', 'formattedTotal', 'username', 'status'
         ));
     }
     

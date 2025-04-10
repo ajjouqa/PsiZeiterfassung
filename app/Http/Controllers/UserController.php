@@ -13,6 +13,7 @@ use Str;
 
 class UserController extends Controller
 {
+
     public function admins()
     {
         $admins = Admin::query()
@@ -24,7 +25,10 @@ class UserController extends Controller
 
     public function azubis()
     {
-        $azubis = Azubi::all();
+        $azubis = Azubi::query()
+            ->with('xmppUserMapping')
+            ->get();
+
         return view('users.azubi',compact('azubis'));
     }
 
@@ -54,39 +58,49 @@ class UserController extends Controller
         ]);
 
 
-        
-        
-        if ($validated['user_type'] === 'azubi') {
-            $user = Azubi::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'phone' => $validated['phone'],
-                'address' => $validated['address'],
-            ]);
+        try{
+            DB::beginTransaction();
 
-        }elseif ($validated['user_type'] === 'admin') {
-
-            $user = Admin::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'phone' => $validated['phone'],
-                'address' => $validated['address'],
-            ]);
-
-        }elseif( $validated['user_type'] === 'mitarbeiter') {
-            
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'phone' => $validated['phone'],
-                'address' => $validated['address'],
-            ]);
+            if ($validated['user_type'] === 'azubi') {
+                $user = Azubi::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'phone' => $validated['phone'],
+                    'address' => $validated['address'],
+                ]);
+    
+            }elseif ($validated['user_type'] === 'admin') {
+    
+                $user = Admin::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'phone' => $validated['phone'],
+                    'address' => $validated['address'],
+                ]);
+    
+            }elseif( $validated['user_type'] === 'mitarbeiter') {
+                
+                $user = User::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'phone' => $validated['phone'],
+                    'address' => $validated['address'],
+                ]);
+            }
+            DB::commit();
+            session()->flash('success', 'User created successfully');
+            return redirect()->route('admin.dashboard')->with('success', 'User created successfully with XMPP account');
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to create user: ' . $e->getMessage());
         }
+        
+        
+       
 
-        return redirect()->route('admin.dashboard')->with('success', 'User created successfully with XMPP account');
     }
 
 

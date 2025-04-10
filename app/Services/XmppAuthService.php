@@ -550,6 +550,7 @@ class XmppAuthService
     public function getDailyPresenceSummaries($userType, $userId, $startDate = null, $endDate = null)
     {
         $query = XmppDailyPresenceSummary::where('user_type', $userType)
+            ->with('status')
             ->where('user_id', $userId)
             ->orderBy('date', 'desc');
 

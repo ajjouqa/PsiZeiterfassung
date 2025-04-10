@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('xmpp_user_mappings', function (Blueprint $table) {
-            $table->timestamp('last_login')->nullable()->after('xmpp_password');
+            $table->timestamp('last_login')->nullable()->after('current_status');
         });
     }
 

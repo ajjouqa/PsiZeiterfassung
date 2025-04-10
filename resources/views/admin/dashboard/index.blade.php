@@ -134,7 +134,6 @@
 							</thead>
 							<tbody>
 								@foreach ($logs as $log)
-
 									<tr>
 										<td>{{ $log->xmppMapping->user->name}}</td>
 										<td>{{ $log->xmppMapping->xmpp_username}}</td>

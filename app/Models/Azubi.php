@@ -28,4 +28,9 @@ class Azubi extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function xmppUserMapping()
+    {
+        return $this->hasOne(XmppUserMapping::class, 'user_id')->where('user_type', 'azubi');
+    }
 }

@@ -27,17 +27,17 @@ class XmppUserMapping extends Model
 
     
     public function user()
-    {
-        if ($this->user_type === 'admin') {
-            return $this->belongsTo(Admin::class, 'user_id');
-        } elseif ($this->user_type === 'azubi') {
-            return $this->belongsTo(Azubi::class, 'user_id');
-        } elseif ($this->user_type === 'mitarbeiter') {
-            return $this->belongsTo(User::class, 'user_id');
-        }
-        
-        return null;
+{
+    if ($this->user_type == 'admin') {
+        return $this->belongsTo(Admin::class, 'user_id');
+    } elseif ($this->user_type == 'azubi') {
+        return $this->belongsTo(Azubi::class, 'user_id');
+    } elseif ($this->user_type == 'mitarbeiter') {
+        return $this->belongsTo(User::class, 'user_id');
     }
+    return null;
+}
+
 
     
 }

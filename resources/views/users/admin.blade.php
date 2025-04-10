@@ -51,7 +51,7 @@
 											<td>{{ $admin->phone }}</td>
 											<td>{{ $admin->address }}</td>
 
-											
+
 											<td>
 												@if ($admin->xmppUserMapping->current_presence == 'available')
 													<span class="badge badge-success">Online</span>
@@ -68,13 +68,17 @@
 											</td>
 											<td>{{ $admin->created_at }}</td>
 											<td>
-												<a href="" class="btn btn-primary">Edit</a>
+
+												<a href="{{ route('xmpp.presence.logs', ['admin', encrypt($admin->id)]) }}"
+													class="btn btn-primary">view user logs</a>
+												<a href="{{ route('xmpp.presence.daily', ['admin', encrypt($admin->id)]) }}"
+													class="btn btn-primary">view daily summary</a>
 												<form action="" method="POST" style="display:inline;">
 													@csrf
 													@method('DELETE')
 													<button type="submit" class="btn btn-danger">Delete</button>
 												</form>
-												
+
 											</td>
 										</tr>
 									@endforeach

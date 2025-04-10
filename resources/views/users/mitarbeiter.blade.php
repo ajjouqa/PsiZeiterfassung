@@ -33,7 +33,8 @@
 									<th class="border-bottom-0">Name</th>
 									<th class="border-bottom-0">Phone</th>
 									<th class="border-bottom-0 w-25">Adress</th>
-									<th class="border-bottom-0">Status</th>
+									<th class="border-bottom-0">Current Status</th>
+									<th class="border-bottom-0">Account Status</th>
 									<th class="border-bottom-0">Created at</th>
 									<th class="border-bottom-0">Action</th>
 								</tr>
@@ -50,6 +51,13 @@
 											<td>{{ $mitarbeiter->phone }}</td>
 											<td>{{ $mitarbeiter->address }}</td>
 											<td>
+												@if ($mitarbeiter->xmppUserMapping->current_presence == 'available')
+													<span class="badge badge-success">Online</span>
+												@else
+													<span class="badge badge-danger">Offline</span>
+												@endif
+											</td>
+											<td>
 												@if ($mitarbeiter->status == 'active')
 													<span class="badge badge-success">Active</span>
 												@else
@@ -58,7 +66,8 @@
 											</td>
 											<td>{{ $mitarbeiter->created_at }}</td>
 											<td>
-												<a href="" class="btn btn-primary">Edit</a>
+											<a href="{{ route('xmpp.presence.logs',['mitarbeiter',encrypt($mitarbeiter->id)]) }}" class="btn btn-primary">view user logs</a>
+
 												<form action="" method="POST" style="display:inline;">
 													@csrf
 													@method('DELETE')

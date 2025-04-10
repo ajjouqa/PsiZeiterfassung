@@ -18,6 +18,26 @@
 @endsection
 @section('content')
     <!-- row -->
+
+
+    <div class="row row-sm d-flex justify-content-center">
+        <div class="col-lg-8 col-xl-8 col-md-12 col-sm-12 ">
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    <div class="card bd-0 mg-b-20 bg-danger-transparent alert p-0 rounded">
+                        <div class="card-header text-danger font-weight-bold">
+                            <i class="far fa-times-circle"></i> Error : {{ $error }}
+                            <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span
+                                    aria-hidden="true">×</span></button>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
+
+    
+
     <div class="row row-sm d-flex justify-content-center">
         <div class="col-lg-8 col-xl-8 col-md-12 col-sm-12 card  box-shadow-0 ">
             <div class="card-header">
@@ -70,6 +90,8 @@
     </div>
     <!-- row -->
 
+
+
     <!-- row closed -->
     </div>
     <!-- Container closed -->
@@ -85,6 +107,9 @@
 
 
 @section('js')
+
+    <script src="{{URL::asset('assets/plugins/notify/js/notifIt.js')}}"></script>
+    <script src="{{URL::asset('assets/plugins/notify/js/notifit-custom.js')}}"></script>
     <!--Internal  Datepicker js -->
     <script src="{{URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js')}}"></script>
     <!--Internal  jquery.maskedinput js -->
@@ -103,4 +128,6 @@
     <script src="{{URL::asset('assets/plugins/pickerjs/picker.min.js')}}"></script>
     <!-- Internal form-elements js -->
     <script src="{{URL::asset('assets/js/form-elements.js')}}"></script>
+
+
 @endsection

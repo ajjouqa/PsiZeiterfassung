@@ -33,7 +33,8 @@
 									<th class="border-bottom-0">Name</th>
 									<th class="border-bottom-0">Phone</th>
 									<th class="border-bottom-0 w-25">Adress</th>
-									<th class="border-bottom-0">Status</th>
+									<th class="border-bottom-0">Current Status</th>
+									<th class="border-bottom-0">Account Status</th>
 									<th class="border-bottom-0">Created at</th>
 									<th class="border-bottom-0">Action</th>
 								</tr>
@@ -50,6 +51,13 @@
 											<td>{{ $azubi->phone }}</td>
 											<td>{{ $azubi->address }}</td>
 											<td>
+												@if ($azubi->xmppUserMapping->current_presence == 'available')
+													<span class="badge badge-success">Online</span>
+												@else
+													<span class="badge badge-danger">Offline</span>
+												@endif
+											</td>
+											<td>
 												@if ($azubi->status == 'active')
 													<span class="badge badge-success">Active</span>
 												@else
@@ -58,13 +66,13 @@
 											</td>
 											<td>{{ $azubi->created_at }}</td>
 											<td>
-												<a href="" class="btn btn-primary">Edit</a>
-												<form action="" method="POST" style="display:inline;">
-													@csrf
-													@method('DELETE')
-													<button type="submit" class="btn btn-danger">Delete</button>
+												<a href="{{ route('xmpp.presence.logs', ['azubi', encrypt($azubi->id)]) }}"
+													class="btn btn-primary">View</a>
+												@csrf
+												@method('DELETE')
+												<button type="submit" class="btn btn-danger">Delete</button>
 												</form>
-												
+
 											</td>
 										</tr>
 									@endforeach

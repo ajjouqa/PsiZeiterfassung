@@ -34,7 +34,7 @@ class Admin extends Authenticatable
 
     public function xmppUserMapping()
     {
-        return $this->hasOne(XmppUserMapping::class, 'user_id', 'id');
+        return $this->hasOne(XmppUserMapping::class, 'user_id', 'id')->where('user_type', 'admin');
     }
 
 }
