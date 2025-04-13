@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DailyStatus;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\XmppHeartbeatController;
@@ -26,6 +27,15 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
 
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
+
+
+    Route::put('Update_overtime', [DailyStatus::class, 'updateOvertime'])->name('update.overtime');
+    Route::put('Update_status', [DailyStatus::class, 'updateStatus'])->name('update.status');
+
+
+
+    Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf');
+
 });
 
 

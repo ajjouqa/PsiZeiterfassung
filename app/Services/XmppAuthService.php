@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\DailyStatus;
 use App\Models\XmppUserMapping;
 use App\Models\XmppPresenceLog;
 use App\Models\XmppDailyPresenceSummary;
@@ -405,6 +406,8 @@ class XmppAuthService
             'date' => $date
         ]);
 
+        
+
         // Set initial values if new record
         if (!$summary->exists) {
             $summary->xmpp_username = $mapping->xmpp_username;
@@ -412,6 +415,7 @@ class XmppAuthService
             $summary->total_seconds = 0;
             $summary->formatted_time = '00:00:00';
         }
+
 
         // Update session count and first login if needed
         $summary->session_count += 1;
@@ -421,6 +425,17 @@ class XmppAuthService
         }
 
         $summary->save();
+
+        $daily_status = DailyStatus::firstOrNew([
+            'daily_summary_id' => $summary->id,
+            'status' => 'working',
+            'notes' => '',
+        ]);
+
+        
+        if(!$daily_status ->exists) {
+            $daily_status->save();
+        }
 
         return $summary;
     }
@@ -552,7 +567,7 @@ class XmppAuthService
         $query = XmppDailyPresenceSummary::where('user_type', $userType)
             ->with('status')
             ->where('user_id', $userId)
-            ->orderBy('date', 'desc');
+            ->orderBy('date', 'asc');
 
         if ($startDate) {
             $query->where('date', '>=', $startDate);

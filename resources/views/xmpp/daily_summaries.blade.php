@@ -31,7 +31,10 @@
                                 @endif
                             </div>
                         </div>
-                        <i class="mdi mdi-dots-horizontal text-gray"></i>
+                        <div>
+                            <i class="typcn typcn-pdf"></i>
+                            <a href="{{ route('generate.daily.presence.pdf',[$userType,encrypt($userId)]) }}" class="">download as pdf</a>
+                        </div>
                     </div>
 
                 </div>
@@ -53,9 +56,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($summaries as $summarie)
+
                                     <tr>
-                                        <td>{{ $summarie->date->format('Y-m-d') }}</td>
-                                        <td>{{ $summarie->first_login->diff($summarie->last_logout)->format('%H:%I:%S') }}</td>
+                                        <td>{{ $summarie->date->format('d') }}</td>
+                                        <td>{{ roundToQuarter($summarie->first_login, $summarie->last_logout) }}</td>
                                         <td>{{ $summarie->session_count }}</td>
                                         <td>
                                             @if ($summarie->status)
@@ -73,9 +77,30 @@
                                         </td>
                                         <td>{{ $summarie->first_login }}</td>
                                         <td>{{ $summarie->last_logout }}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ $summarie->over_time }} </td>
+                                        <td>
+                                        <div class="dropdown">
+													<button aria-expanded="false" aria-haspopup="true"
+														class="btn ripple btn-outline-primary btn-sm" data-toggle="dropdown"
+														type="button"> <i
+															class="fas fa-caret-down mr-1"></i></button>
+													<div class="dropdown-menu tx-13">
+														<a class="dropdown-item" href="#" data-toggle="modal"
+															data-target="#update_daystatus{{$summarie->id}}">Modify Day Status</a>
+
+														<a class="dropdown-item" href="#" data-toggle="modal"
+															data-target="#update_overtime{{$summarie->id}}">Modify Over Time</a>
+													</div>
+												</div>
+                                        </td>
                                     </tr>
+
+
+                                    @include('xmpp.update_daystatus')
+                                    @include('xmpp.update_overtime')
+
+
+
                                 @endforeach
                             </tbody>
                         </table>
