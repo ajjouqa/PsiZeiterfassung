@@ -41,6 +41,7 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
 
 Route::prefix('azubi')->middleware(['auth:azubi'])->group(function () {
     Route::get('dashboard',[DashboardController::class,'AzubiDashboard'])->name('azubi.dashboard');
+    Route::get('dashboard/daily-presence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily');
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
 });

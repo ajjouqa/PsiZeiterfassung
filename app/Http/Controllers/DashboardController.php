@@ -32,7 +32,15 @@ class DashboardController extends Controller
 
     public function AzubiDashboard()
     {
-        return view('azubi.dashboard.index');
+
+        $logs = XmppPresenceLog::query()
+        ->with('xmppMapping')
+        ->where('user_id', auth()->user()->id)
+        ->where('user_type', 'azubi')
+        ->orderBy('timestamp', 'desc')
+        ->take(10)->get();
+
+        return view('azubi.dashboard.index', compact('logs'));
     }
 
     public function MitarbeiterDashboard()
