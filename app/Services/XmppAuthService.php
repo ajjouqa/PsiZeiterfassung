@@ -7,8 +7,11 @@ use App\Models\DailyStatus;
 use App\Models\XmppUserMapping;
 use App\Models\XmppPresenceLog;
 use App\Models\XmppDailyPresenceSummary;
+use DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use App\Services\XMPPService; 
 
 class XmppAuthService
 {
@@ -29,7 +32,7 @@ class XmppAuthService
         $username = strtolower($userType . '_' . str_replace(' ', '_', $userData['name']));
 
         // Generate a password or use the one from userData
-        $password = $userData['xmpp_password'] ?? str_random(12);
+        $password = $userData['xmpp_password'] ?? Str::random(12);
 
         // Check if mapping already exists
         $mapping = XmppUserMapping::where('user_type', $userType)
@@ -443,7 +446,7 @@ class XmppAuthService
     /**
      * Update daily presence summary when user logs out
      */
-    protected function updateDailyPresenceSummaryLogout($mapping, $logoutTime)
+    public function updateDailyPresenceSummaryLogout($mapping, $logoutTime)
     {
         // Find user's last login event
         $lastLogin = XmppPresenceLog::where('user_type', $mapping->user_type)

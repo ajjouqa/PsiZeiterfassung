@@ -21,7 +21,6 @@ class AuthenticatedSessionController extends Controller
 
     protected $xmppAuthService;
 
-    // إضافة بناء جديد لحقن الخدمة
     public function __construct(XmppAuthService $xmppAuthService)
     {
         $this->xmppAuthService = $xmppAuthService;
@@ -67,7 +66,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        event(new LogoutEvent(Auth::guard('web')->user()->id, $this->detectUserRole()));
+        $user = Auth::guard('web')->user();
+        $role = $this->detectUserRole();
+
+        $authResult = $this->xmppAuthService->authenticateUser('mitarbeiter', $user->id);
+        
+        if ($authResult) {
+            $this->xmppAuthService->logoutUser('mitarbeiter', $user->id, $authResult['connection']);
+        }
+
+        event(new LogoutEvent($user->id, $role));
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

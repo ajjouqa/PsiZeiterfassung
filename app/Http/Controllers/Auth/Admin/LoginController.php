@@ -20,7 +20,6 @@ class LoginController extends Controller
     use DetectsUserRole;
     protected $xmppAuthService;
 
-    // إضافة بناء جديد لحقن الخدمة
     public function __construct(XmppAuthService $xmppAuthService)
     {
         $this->xmppAuthService = $xmppAuthService;
@@ -70,8 +69,6 @@ class LoginController extends Controller
     {
 
         $user = Auth::guard('admin')->user();
-        $role = $this->detectUserRole();
-
         // Add this block - Get XMPP connection and logout
         $authResult = $this->xmppAuthService->authenticateUser('admin', $user->id);
         if ($authResult) {

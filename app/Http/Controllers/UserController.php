@@ -34,7 +34,7 @@ class UserController extends Controller
 
     public function mitarbeiter()
     {
-        $mitarbeiters = User::qyery()
+        $mitarbeiters = User::query()
             ->with('xmppUserMapping')
             ->get();
         return view('users.mitarbeiter',compact('mitarbeiters'));

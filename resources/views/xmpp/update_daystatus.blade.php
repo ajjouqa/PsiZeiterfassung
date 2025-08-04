@@ -32,7 +32,7 @@
                                 @endif
                             </textarea>
                         </div>
-                        <input type="hidden" name="summary_id" value="{{ $summarie->status->id }}">
+                        <input type="hidden" name="summary_id" value="{{ $summarie->id }}">
                     </div>
                 </div>
                 <div class="modal-footer">

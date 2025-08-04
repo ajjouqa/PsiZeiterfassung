@@ -66,14 +66,16 @@
 											</td>
 											<td>{{ $mitarbeiter->created_at }}</td>
 											<td>
-											<a href="{{ route('xmpp.presence.logs',['mitarbeiter',encrypt($mitarbeiter->id)]) }}" class="btn btn-primary">view user logs</a>
-
+												<a href="{{ route('xmpp.presence.logs', ['mitarbeiter', encrypt($mitarbeiter->id)]) }}"
+													class="btn btn-primary">view user logs</a>
+												<a href="{{ route('xmpp.presence.daily', ['mitarbeiter', encrypt($mitarbeiter->id)]) }}"
+													class="btn btn-primary">view daily summary</a>
 												<form action="" method="POST" style="display:inline;">
 													@csrf
 													@method('DELETE')
 													<button type="submit" class="btn btn-danger">Delete</button>
 												</form>
-												
+
 											</td>
 										</tr>
 									@endforeach

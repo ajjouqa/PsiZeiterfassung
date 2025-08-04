@@ -23,7 +23,7 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('dashboard/add-user', [UserController::class, 'create'])->name('admin.create.user');
     Route::post('dashboard/add-user/store', [UserController::class, 'store'])->name('admin.store.user');
     Route::get('dashboard/presence/{userType}/{userId}', [XmppPresenceController::class, 'showPresenceLogs'])->name('xmpp.presence.logs');
-    Route::get('dashboard/daily-presence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily');
+    Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily');
 
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
@@ -34,14 +34,17 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
 
 
 
-    Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf');
+    Route::get('/generate-daily-presence-pdf/{userType}/{userId}/{month}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf');
 
 });
 
 
 Route::prefix('azubi')->middleware(['auth:azubi'])->group(function () {
     Route::get('dashboard',[DashboardController::class,'AzubiDashboard'])->name('azubi.dashboard');
-    Route::get('dashboard/daily-presence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily');
+    Route::get('dashboard/presence/{userType}/{userId}', [XmppPresenceController::class, 'showPresenceLogs'])->name('xmpp.presence.logs.azubi');
+    Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily.azubi');
+    Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.azubi');
+    
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
 });
@@ -50,10 +53,12 @@ Route::prefix('azubi')->middleware(['auth:azubi'])->group(function () {
 
 Route::prefix('mitarbeiter')->middleware(['auth:web'])->group(function () {
     Route::get('dashboard',[DashboardController::class,'MitarbeiterDashboard'])->name('mitarbeiter.dashboard');
+    Route::get('dashboard/presence/{userType}/{userId}', [XmppPresenceController::class, 'showPresenceLogs'])->name('xmpp.presence.logs.mitarbeiter');
+    Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily.mitarbeiterter');
+    Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.mitarbeiter');
+
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
 });
-
-
 
 

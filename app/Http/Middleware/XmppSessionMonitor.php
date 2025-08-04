@@ -29,6 +29,7 @@ class XmppSessionMonitor
 
     public function terminate($request, $response)
     {
+        
         $user = $request->user('azubi');
         
         // Check for session expiration or logout

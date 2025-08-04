@@ -27,10 +27,9 @@ class XmppPresenceController extends Controller
     {
 
         $userId = decrypt($userId);
-        $userId = $request->input('user_id');
-
         $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : null;
         $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : null;
+
 
         $logs = $this->xmppAuthService->getUserPresenceLogs($userType, $userId, $startDate, $endDate);
 
@@ -46,7 +45,6 @@ class XmppPresenceController extends Controller
 
         $status = XmppUserMapping::where('user_id', $userId)->where('user_type', $userType)->first()?->current_presence;
 
-
         return view('xmpp.presence_logs', compact('logs', 'onlineTime', 'userType', 'username', 'status'));
     }
 
@@ -57,7 +55,6 @@ class XmppPresenceController extends Controller
     public function showDailySummaries(Request $request, $userType, $userId)
     {
         $userId = decrypt($userId);
-
         $month = $request->input('month', Carbon::now()->format('Y-m'));
         $startDate = Carbon::parse($month)->startOfMonth();
         $endDate = Carbon::parse($month)->endOfMonth();
@@ -81,7 +78,8 @@ class XmppPresenceController extends Controller
             'startDate',
             'endDate',
             'username',
-            'status'
+            'status',
+            'month'
         ));
     }
 
@@ -98,12 +96,12 @@ class XmppPresenceController extends Controller
     }
 
 
-    public function generateDailyPresencePDF(Request $request, $userType, $userId)
+    public function generateDailyPresencePDF(Request $request, $userType, $userId, $month = null)
     {
-        
+
         $userId = decrypt($userId);
 
-        $month = $request->input('month', Carbon::now()->format('Y-m'));
+        $month = $request->route('month', Carbon::now()->format('Y-m'));
         $startDate = Carbon::parse($month)->startOfMonth();
         $endDate = Carbon::parse($month)->endOfMonth();
         $summaries = $this->xmppAuthService->getDailyPresenceSummaries($userType, $userId, $startDate, $endDate);
@@ -117,7 +115,7 @@ class XmppPresenceController extends Controller
             $username = User::findOrFail($userId)->name;
         }
 
-        
+
 
         $status = XmppUserMapping::where('user_id', $userId)->where('user_type', $userType)->first()?->current_presence;
 

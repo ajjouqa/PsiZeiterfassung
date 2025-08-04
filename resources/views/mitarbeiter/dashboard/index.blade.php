@@ -21,10 +21,6 @@
 
 
 
-@section('logout')
-	@include('mitarbeiter.dashboard.logout')
-@endsection
-
 
 
 

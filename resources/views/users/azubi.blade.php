@@ -66,11 +66,15 @@
 											</td>
 											<td>{{ $azubi->created_at }}</td>
 											<td>
+												
 												<a href="{{ route('xmpp.presence.logs', ['azubi', encrypt($azubi->id)]) }}"
-													class="btn btn-primary">View</a>
-												@csrf
-												@method('DELETE')
-												<button type="submit" class="btn btn-danger">Delete</button>
+													class="btn btn-primary">view user logs</a>
+												<a href="{{ route('xmpp.presence.daily', ['azubi', encrypt($azubi->id)]) }}"
+													class="btn btn-primary">view daily summary</a>
+												<form action="" method="POST" style="display:inline;">
+													@csrf
+													@method('DELETE')
+													<button type="submit" class="btn btn-danger">Delete</button>
 												</form>
 
 											</td>

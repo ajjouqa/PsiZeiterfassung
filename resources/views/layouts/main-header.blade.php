@@ -263,7 +263,13 @@
 									<a class="dropdown-item" href=""><i class="bx bxs-inbox"></i>Inbox</a>
 									<a class="dropdown-item" href=""><i class="bx bx-envelope"></i>Messages</a>
 									<a class="dropdown-item" href=""><i class="bx bx-slider-alt"></i> Account Settings</a>
-									@yield('logout')
+									@if (Auth::guard('admin')->check())
+										@include('admin.dashboard.logout')
+									@elseif(Auth::guard('web')->check())
+										@include('mitarbeiter.dashboard.logout')
+									@elseif(Auth::guard('azubi')->check())
+										@include('azubi.dashboard.logout')
+									@endif
 								</div>
 							</div>
 							<div class="dropdown main-header-message right-toggle">

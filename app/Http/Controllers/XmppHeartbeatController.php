@@ -72,17 +72,16 @@ class XmppHeartbeatController extends Controller
         if(Auth::guard('azubi')->check()) {
             $user = $request->user('azubi');
             $role = 'azubi';
-        } elseif(Auht::guard('web')->check()) {
-            $user = $request->user('web');
-            $role = 'mitarbeiter';
         } elseif(Auth::guard('admin')->check()) {
             $user = $request->user('admin');
             $role = 'admin';
+        } elseif(Auth::guard('web')->check()) {
+            $user = Auth::user();
+            $role = 'mitarbeiter';
         } else {
             $role = null;
         }
 
-        
 
         if (!$user) {
             return response()->json(['error' => 'Unauthenticated'], 401);
@@ -91,6 +90,7 @@ class XmppHeartbeatController extends Controller
         Log::info("Browser disconnect notification received for user ID: {$user->id}");
         
         $mapping = $this->xmppAuthService->getUserMapping($role, $user->id);
+        
         if (!$mapping) {
             return response()->json(['error' => 'No XMPP mapping found'], 404);
         }

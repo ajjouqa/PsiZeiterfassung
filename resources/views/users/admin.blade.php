@@ -68,7 +68,6 @@
 											</td>
 											<td>{{ $admin->created_at }}</td>
 											<td>
-
 												<a href="{{ route('xmpp.presence.logs', ['admin', encrypt($admin->id)]) }}"
 													class="btn btn-primary">view user logs</a>
 												<a href="{{ route('xmpp.presence.daily', ['admin', encrypt($admin->id)]) }}"

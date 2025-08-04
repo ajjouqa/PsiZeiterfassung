@@ -162,11 +162,6 @@
 
 
 
-@section('logout')
-	@include('admin.dashboard.logout')
-@endsection
-
-
 
 
 

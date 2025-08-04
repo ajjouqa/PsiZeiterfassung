@@ -22,8 +22,8 @@ class LogLoginListener
         if (!$todayLog){
             Logs::create([
                 'user_id' => $event->user_id,
-                'login_time' => $event->loginTime,
-                'logout_time' => now()->endOfDay(),
+                'login_time' => null,
+                'logout_time' => null,
                 'role' => $event->role,
             ]);
         }

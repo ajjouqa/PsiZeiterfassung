@@ -39,65 +39,66 @@ use Illuminate\Support\Facades\Auth;
 <script src="{{URL::asset('assets/plugins/side-menu/sidemenu.js')}}"></script>
 
 @if(Auth::check())
-<script>
+    <script>
 
-    @php
-        
-        // Check if the user is logged in and the XMPP connection is established
-        if (Auth::guard('admin')->check()) {
-            $user = 'admin';
-        } elseif (Auth::guard('azubi')->check()) {
-            $user = 'azubi';
-        } elseif (Auth::guard('web')->check()) {
-            $user = 'mitarbeiter';
-        } else {
-            $user = null; // User is not logged in
-        }
-    @endphp
+        @php
 
-    document.addEventListener('DOMContentLoaded', function () {
-        let lastActivityTime = Date.now();
+            // Check if the user is logged in and the XMPP connection is established
+            if (Auth::guard('admin')->check()) {
+                $user = 'admin';
+            } elseif (Auth::guard('azubi')->check()) {
+                $user = 'azubi';
+            } elseif (Auth::guard('web')->check()) {
+                $user = 'mitarbeiter';
+            } else {
+                $user = null; // User is not logged in
+            }
+        @endphp
 
-        ['mousemove', 'keydown', 'scroll', 'click'].forEach(function (eventType) {
-            document.addEventListener(eventType, function () {
-                lastActivityTime = Date.now();
+        document.addEventListener('DOMContentLoaded', function () {
+            let lastActivityTime = Date.now();
+
+            ['mousemove', 'keydown', 'scroll', 'click'].forEach(function (eventType) {
+                document.addEventListener(eventType, function () {
+                    lastActivityTime = Date.now();
+                });
+            });
+
+            setInterval(function () {
+
+                if (Date.now() - lastActivityTime > 120000) {
+                    console.log('User inactive, skipping heartbeat');
+                    return;
+                }
+
+                fetch('/{{ $user }}/xmpp-heartbeat', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('XMPP heartbeat failed:', response.status);
+                            return response.json().then(err => console.error(err));
+                        }
+                        return response.json();
+                    })
+                    .then(data => console.debug('Heartbeat success'))
+                    .catch(error => console.error('XMPP heartbeat error:', error));
+            }, 30000);
+
+            window.addEventListener('beforeunload', function () {
+                navigator.sendBeacon(
+                    '/{{ $user }}/xmpp-disconnect',
+                    new Blob(
+                        [JSON.stringify({})],
+                        { type: 'application/json' }
+                    )
+                );
             });
         });
-
-        setInterval(function () {
-            if (Date.now() - lastActivityTime > 120000) {
-                console.log('User inactive, skipping heartbeat');
-                return;
-            }
-
-            fetch('/{{ $user }}/xmpp-heartbeat', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        console.error('XMPP heartbeat failed:', response.status);
-                        return response.json().then(err => console.error(err));
-                    }
-                    return response.json();
-                })
-                .then(data => console.debug('Heartbeat success'))
-                .catch(error => console.error('XMPP heartbeat error:', error));
-        }, 30000);
-
-        window.addEventListener('beforeunload', function () {
-            navigator.sendBeacon(
-                '/{{ $user }}/xmpp-disconnect',
-                new Blob(
-                    [JSON.stringify({})],
-                    { type: 'application/json' }
-                )
-            );
-        });
-    });
-</script>
+    </script>
 @endif

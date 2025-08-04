@@ -66,9 +66,6 @@
 	<!-- /main-content -->
 @endsection
 
-@section('logout')
-	@include('azubi.dashboard.logout')
-@endsection
 
 @section('js')
 	<!--Internal  Chart.bundle js -->
