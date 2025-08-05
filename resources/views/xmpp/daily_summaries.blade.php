@@ -88,9 +88,8 @@
                                     <th class="wd-15p border-bottom-0" style="width:10%;">First Login</th>
                                     <th class="wd-10p border-bottom-0" style="width:10%;">Last Logout</th>
                                     <th class="wd-10p border-bottom-0" style="width:10%;">Overtime</th>
-                                    @if (Auth::guard('admin')->check())
-                                        <th class="wd-25p border-bottom-0" style="width:10%;">Action</th>
-                                    @endif
+                                    <th class="wd-25p border-bottom-0" style="width:10%;">Action</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -133,13 +132,23 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                            @else
+                                                <div class="dropdown">
+                                                    <button aria-expanded="false" aria-haspopup="true"
+                                                        class="btn ripple btn-outline-primary btn-sm" data-toggle="dropdown"
+                                                        type="button"> <i class="fas fa-caret-down mr-1"></i></button>
+                                                    <div class="dropdown-menu tx-13">
+                                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                                            data-target="#RequestAModifcation{{$summarie->id}}">Request a modification</a>
+                                                    </div>
+                                                </div>
                                             @endif
                                     </tr>
 
 
                                     @include('xmpp.update_daystatus')
                                     @include('xmpp.update_overtime')
-
+                                    @include('xmpp.request_a_modification')
 
 
                                 @endforeach

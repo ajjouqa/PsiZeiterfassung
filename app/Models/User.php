@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(XmppUserMapping::class, 'user_id', 'id');
     }
+
+    public function statusChangeRequests()
+    {
+        return $this->hasMany(StatusChangeRequest::class, 'requester_id', 'id')->where('requester_type', 'mitarbeiter');
+    }
 }

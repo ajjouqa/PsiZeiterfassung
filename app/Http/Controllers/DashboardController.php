@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StatusChangeRequest;
 use App\Models\User;
 use App\Models\XmppPresenceLog;
 use Auth;
@@ -28,7 +29,8 @@ class DashboardController extends Controller
         ->take(10)->get();
 
         
-        return view('admin.dashboard.index', compact('onlineUsers', 'mitarbeiters', 'admins', 'azubis', 'totalUsers', 'logs'));
+        
+        return view('admin.dashboard.index', compact('onlineUsers', 'mitarbeiters', 'admins', 'azubis', 'totalUsers', 'logs', ));
     }
 
     public function AzubiDashboard()
@@ -41,11 +43,15 @@ class DashboardController extends Controller
         ->orderBy('timestamp', 'desc')
         ->take(10)->get();
 
-        return view('azubi.dashboard.index', compact('logs'));
+        
+
+        return view('azubi.dashboard.index', compact('logs', ));
     }
 
     public function MitarbeiterDashboard()
     {
+
+        
         return view('mitarbeiter.dashboard.index');
     }
 }

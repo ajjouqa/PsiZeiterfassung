@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\NotificationComposer;
 use App\Models\Admin;
 use App\Models\Azubi;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Services\XMPPService;
 use Illuminate\Support\ServiceProvider;
-use MockXMPPService;
 use App\Services\XmppAuthService;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,5 +49,7 @@ class AppServiceProvider extends ServiceProvider
             Azubi::observe(UserObserver::class);
             User::observe(UserObserver::class);
         }
+
+        View::composer('*', NotificationComposer::class);
     }
 }

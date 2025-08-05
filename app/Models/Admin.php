@@ -37,4 +37,12 @@ class Admin extends Authenticatable
         return $this->hasOne(XmppUserMapping::class, 'user_id', 'id')->where('user_type', 'admin');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(StatusChangeRequest::class, 'id');
+    }
+    public function statusChangeRequests()
+    {
+        return $this->hasMany(StatusChangeRequest::class, 'requester_id', 'id')->where('requester_type', 'admin');
+    }
 }

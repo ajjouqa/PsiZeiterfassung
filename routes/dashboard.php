@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DailyStatus;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StatusChangeRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\XmppHeartbeatController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,8 @@ Route::prefix('azubi')->middleware(['auth:azubi'])->group(function () {
     Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily.azubi');
     Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.azubi');
     
+
+    Route::post('request-a-modification', [StatusChangeRequestController::class, 'store'])->name('request.a.modification.azubi');
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
 });

@@ -33,4 +33,9 @@ class Azubi extends Authenticatable
     {
         return $this->hasOne(XmppUserMapping::class, 'user_id')->where('user_type', 'azubi');
     }
+
+    public function statusChangeRequests()
+    {
+        return $this->hasMany(StatusChangeRequest::class, 'requester_id')->where('requester_type', 'azubi');
+    }
 }
