@@ -9,12 +9,17 @@ class StatusChangeRequest extends Model
 {
     use HasFactory;
 
+    
     protected $fillable = [
         'requester_id',
         'requester_type',
-        'new_status',
         'status',
         'date',
+        'requested_status',
+        'reason',
+        'admin_note',
+        'admin_id',
+        'summarie_id',
     ];
 
     public function mitarbeiter()
@@ -32,6 +37,7 @@ class StatusChangeRequest extends Model
         return $this->belongsTo(Azubi::class, 'requester_id');
     }
 
+    
     public function getRequesterAttribute()
     {
         switch ($this->requester_type) {

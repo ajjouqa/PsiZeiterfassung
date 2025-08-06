@@ -9,6 +9,7 @@ class DailyStatus extends Model
 {
     use HasFactory;
 
+    
     protected $fillable = [
         'daily_summary_id',
         'status',
@@ -19,4 +20,6 @@ class DailyStatus extends Model
     {
         return $this->belongsTo(XmppDailyPresenceSummary::class, 'daily_summary_id');
     }
+
+    
 }

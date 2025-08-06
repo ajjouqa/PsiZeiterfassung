@@ -44,6 +44,11 @@ class XmppDailyPresenceSummary extends Model
         return null;
     }
 
+
+    /**
+     * Get the daily status associated with this summary
+     */
+
     public function status()
     {
         return $this->hasOne(DailyStatus::class, 'daily_summary_id');

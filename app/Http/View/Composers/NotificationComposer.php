@@ -15,7 +15,8 @@ class NotificationComposer
         if (Auth::guard('admin')->check()) {
             $notifications = StatusChangeRequest::with('mitarbeiter', 'azubi')
             ->where('status', 'pending')
-            ->take(5)
+            ->orderBy('created_at', 'desc')
+            ->take(3)
             ->get();
 
         } elseif (Auth::guard('web')->check()) {
@@ -24,7 +25,7 @@ class NotificationComposer
             ->where('requester_type', 'mitarbeiter')
             ->where('requester_id', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(3)
             ->get();
         } elseif (Auth::guard('azubi')->check()) {
             $notifications = StatusChangeRequest::with('azubi')
@@ -32,7 +33,7 @@ class NotificationComposer
             ->where('requester_type', 'azubi')
             ->where('requester_id', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(3)
             ->get();
         }
 

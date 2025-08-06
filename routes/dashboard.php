@@ -30,10 +30,13 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
 
 
-    Route::put('Update_overtime', [DailyStatus::class, 'updateOvertime'])->name('update.overtime');
-    Route::put('Update_status', [DailyStatus::class, 'updateStatus'])->name('update.status');
+    Route::put('Update-overtime', [DailyStatus::class, 'updateOvertime'])->name('update.overtime');
+    Route::put('Update-status', [DailyStatus::class, 'updateStatus'])->name('update.status');
 
 
+    Route::get('/notification',[StatusChangeRequestController::class, 'index'])->name('notification.admin');
+    Route::get('/update-daily-status/Request/{id}',[StatusChangeRequestController::class, 'show'])->name('update.daily.status.request');
+    Route::post('/update-daily-status/Request/{id}',[StatusChangeRequestController::class, 'update'])->name('update.daily.status.request.update');
 
     Route::get('/generate-daily-presence-pdf/{userType}/{userId}/{month}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf');
 
