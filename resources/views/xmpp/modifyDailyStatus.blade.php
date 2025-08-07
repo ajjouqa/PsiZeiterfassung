@@ -12,13 +12,13 @@
 @endsection
 @section('content')
     <!-- row -->
-     @if (session('success') == 'Request processed')
+     @if (session('success') == 'Approuved')
         <div class="alert alert-success">
             Request Approved Successfully
         </div>
-    @elseif (session('success') == 'Request rejected')
+    @elseif (session('success') == 'Rejected')
         <div class="alert alert-danger">
-            {{ session('error') }}
+            Request Rejected Successfully
         </div>
     @endif
     <div class="row">

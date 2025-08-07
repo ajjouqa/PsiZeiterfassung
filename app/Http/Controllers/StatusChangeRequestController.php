@@ -104,14 +104,22 @@ class StatusChangeRequestController extends Controller
                 ]);
             }
 
-            return back()->with('success', 'Request processed.');
+            return back()->with('success', 'Approuved');
         }elseif ($request->status === 'rejected') {
             StatusChangeRequest::where('id', $request->id)->update([
                 'status' => $request->status,
                 'admin_note' => $request->admin_note,
             ]);
-            return back()->with('success', 'Request rejected.');
+            return back()->with('success', 'Rejected');
         }
 
     }
+    public function destroy($id)
+    {
+        $id = decrypt($id);
+        $request = StatusChangeRequest::findOrFail($id);
+        $request->delete();
+        return back()->with('success', 'Request deleted successfully');
+    }
+    
 }

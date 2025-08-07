@@ -50,8 +50,13 @@ class DashboardController extends Controller
 
     public function MitarbeiterDashboard()
     {
-
+        $logs = XmppPresenceLog::query()
+        ->with('xmppMapping')
+        ->where('user_id', auth()->user()->id)
+        ->where('user_type', 'mitarbeiter')
+        ->orderBy('timestamp', 'desc')
+        ->take(10)->get();
         
-        return view('mitarbeiter.dashboard.index');
+        return view('mitarbeiter.dashboard.index', compact('logs', ));
     }
 }
