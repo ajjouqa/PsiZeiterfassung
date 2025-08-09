@@ -57,6 +57,6 @@ class DashboardController extends Controller
         ->orderBy('timestamp', 'desc')
         ->take(10)->get();
         
-        return view('mitarbeiter.dashboard.index', compact('logs', ));
+        return view('mitarbeiter.dashboard.index', compact('logs' ));
     }
 }

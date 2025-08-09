@@ -21,7 +21,7 @@
 						<h4 class="card-title mg-b-0">LasT Logs</h4>
 						<div>
 							<a href="">Check All</a>
-
+							
 						</div>
 					</div>
 				</div>

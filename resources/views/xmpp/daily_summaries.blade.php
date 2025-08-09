@@ -22,7 +22,7 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            
+
                             <h4 class="card-title mg-b-0 w-100 mr-2">Logs table for {{ $userType }} : {{ $username }}</h4>
                             <div>
                                 @if ($status == 'available')
@@ -36,42 +36,40 @@
                             <i class="typcn typcn-pdf"></i>
                             @if (Auth::guard('azubi')->check())
                                 <a class="btn btn-light btn-block"
-                                    href="{{ route('generate.daily.presence.pdf.azubi', [$userType, encrypt($userId),$month]) }}"
+                                    href="{{ route('generate.daily.presence.pdf.azubi', [$userType, encrypt($userId), $month]) }}"
                                     class="">download as pdf</a>
                             @elseif(Auth::guard('web')->check())
                                 <a class="btn btn-light btn-block"
-                                    href="{{ route('generate.daily.presence.pdf.mitarbeiter', [$userType, encrypt($userId),$month]) }}"
+                                    href="{{ route('generate.daily.presence.pdf.mitarbeiter', [$userType, encrypt($userId), $month]) }}"
                                     class="">download as pdf</a>
                             @else
                                 <a class="btn btn-light btn-block"
-                                    href="{{ route('generate.daily.presence.pdf', [$userType, encrypt($userId),$month]) }}"
+                                    href="{{ route('generate.daily.presence.pdf', [$userType, encrypt($userId), $month]) }}"
                                     class="">download as pdf</a>
                             @endif
                         </div>
                     </div>
                     <div class="d-flex justify-content-center mt-3 filter">
-                        
+
                         @if (Auth::guard('admin')->check())
                             <form action="{{ route('xmpp.presence.daily', [$userType, encrypt($userId)]) }}" method="GET"
                                 class="form-inline">
                         @elseif(Auth::guard('web')->check())
-                            <form action="{{ route('xmpp.presence.daily.mitarbeiter', [$userType, encrypt($userId)]) }}" method="GET"
-                                class="form-inline">
-                        @elseif(Auth::guard('azubi')->check())
-                            <form action="{{ route('xmpp.presence.daily.azubi', [$userType, encrypt($userId)]) }}" method="GET"
-                                class="form-inline">
-                        @endif
-                            <form action="{{ route('xmpp.presence.daily', [$userType, encrypt($userId)]) }}" method="GET"
-                                    class="form-inline">
-                                <div class="form-group">
-                                    <label for="date" class="mr-2">Select Date:</label>
-                                    <input type="month" name="month" id="date" class="form-control mr-2"
-                                        value="{{ $month ?? request('month', now()->format('Y-m')) }}">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Filter</button>
-                                <a href="{{ route('xmpp.presence.daily', [$userType, encrypt($userId)]) }}"
-                                    class="btn btn-secondary ml-2">Reset</a>
-                            </form>
+                                <form action="{{ route('xmpp.presence.daily.mitarbeiter', [$userType, encrypt($userId)]) }}"
+                                    method="GET" class="form-inline">
+                            @elseif(Auth::guard('azubi')->check())
+                                    <form action="{{ route('xmpp.presence.daily.azubi', [$userType, encrypt($userId)]) }}"
+                                        method="GET" class="form-inline">
+                                @endif
+                                    <div class="form-group">
+                                        <label for="date" class="mr-2">Select Date:</label>
+                                        <input type="month" name="month" id="date" class="form-control mr-2"
+                                            value="{{ $month ?? request('month', now()->format('Y-m')) }}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                    <a href="{{ route('xmpp.presence.daily', [$userType, encrypt($userId)]) }}"
+                                        class="btn btn-secondary ml-2">Reset</a>
+                                </form>
 
                     </div>
                 </div>
@@ -93,65 +91,73 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($summaries as $summarie)
+                                @if (count($summaries) > 0)
+                                    @foreach ($summaries as $summarie)
+                                        <tr>
+                                            <td>{{ $summarie->date->format('d-m-Y') }}</td>
+                                            <td>{{ roundToQuarter($summarie->first_login, $summarie->last_logout) }}</td>
+                                            <td>{{ $summarie->session_count }}</td>
+                                            <td>
+                                                @if ($summarie->status)
+                                                    {{ $summarie->status->status }}
+                                                @else
+                                                    Not available
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($summarie->status)
+                                                    {{ $summarie->status->notes }}
+                                                @else
+                                                    Not Comment
+                                                @endif
+                                            </td>
+                                            <td>{{ $summarie->first_login }}</td>
+                                            <td>{{ $summarie->last_logout }}</td>
+                                            <td>{{ $summarie->over_time }} </td>
+                                            <td>
+                                                @if (Auth::guard('admin')->check())
 
-                                    <tr>
-                                        <td>{{ $summarie->date->format('d-m-Y') }}</td>
-                                        <td>{{ roundToQuarter($summarie->first_login, $summarie->last_logout) }}</td>
-                                        <td>{{ $summarie->session_count }}</td>
-                                        <td>
-                                            @if ($summarie->status)
-                                                {{ $summarie->status->status }}
-                                            @else
-                                                Not available
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($summarie->status)
-                                                {{ $summarie->status->notes }}
-                                            @else
-                                                Not Comment
-                                            @endif
-                                        </td>
-                                        <td>{{ $summarie->first_login }}</td>
-                                        <td>{{ $summarie->last_logout }}</td>
-                                        <td>{{ $summarie->over_time }} </td>
-                                        <td>
-                                            @if (Auth::guard('admin')->check())
+                                                        <div class="dropdown">
+                                                            <button aria-expanded="false" aria-haspopup="true"
+                                                                class="btn ripple btn-outline-primary btn-sm" data-toggle="dropdown"
+                                                                type="button"> <i class="fas fa-caret-down mr-1"></i></button>
+                                                            <div class="dropdown-menu tx-13">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                    data-target="#update_daystatus{{$summarie->id}}">Modify Day Status</a>
 
-                                                    <div class="dropdown">
-                                                        <button aria-expanded="false" aria-haspopup="true"
-                                                            class="btn ripple btn-outline-primary btn-sm" data-toggle="dropdown"
-                                                            type="button"> <i class="fas fa-caret-down mr-1"></i></button>
-                                                        <div class="dropdown-menu tx-13">
-                                                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                                                data-target="#update_daystatus{{$summarie->id}}">Modify Day Status</a>
-
-                                                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                                                data-target="#update_overtime{{$summarie->id}}">Modify Over Time</a>
+                                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                    data-target="#update_overtime{{$summarie->id}}">Modify Over Time</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            @else
+                                                    </td>
+                                                @else
                                                 <div class="dropdown">
                                                     <button aria-expanded="false" aria-haspopup="true"
                                                         class="btn ripple btn-outline-primary btn-sm" data-toggle="dropdown"
                                                         type="button"> <i class="fas fa-caret-down mr-1"></i></button>
                                                     <div class="dropdown-menu tx-13">
                                                         <a class="dropdown-item" href="#" data-toggle="modal"
-                                                            data-target="#RequestAModifcation{{$summarie->id}}">Request a modification</a>
+                                                            data-target="#RequestAModifcation{{$summarie->id}}">Request a
+                                                            modification</a>
                                                     </div>
                                                 </div>
                                             @endif
+                                        </tr>
+
+
+                                        @include('xmpp.update_daystatus')
+                                        @include('xmpp.update_overtime')
+                                        @include('xmpp.request_a_modification')
+
+
+                                    @endforeach
+
+                                @else
+                                    <tr>
+                                        <td colspan="9" class="text-center">No data available for this month.</td>
                                     </tr>
+                                @endif
 
-
-                                    @include('xmpp.update_daystatus')
-                                    @include('xmpp.update_overtime')
-                                    @include('xmpp.request_a_modification')
-
-
-                                @endforeach
                             </tbody>
                         </table>
                     </div>

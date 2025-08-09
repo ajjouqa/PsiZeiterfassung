@@ -5,7 +5,19 @@
                 <h6 class="modal-title">User : {{ $username }}</h6><button aria-label="Close" class="close btn"
                     data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
             </div>
-            <form action="{{ route('request.a.modification.azubi') }}" method="post">
+            @php
+                if (Auth::guard('azubi')->check()) {
+                    $route = 'request.a.modification.azubi';
+                } elseif (Auth::guard('web')->check()) {
+                    $route = 'request.a.modification.mitarbeiter';
+                } else {
+                    $route = '';
+                }
+
+            @endphp
+            <form action="{{ route($route) }}" method="post">
+                @csrf
+                @method('post')
                 <div class="modal-body">
                     {{ method_field('post') }}
                     {{ csrf_field() }}

@@ -117,7 +117,7 @@
 						<div class="main-notification-list Notification-scroll">
 							@if(count($notifications))
 								@foreach($notifications as $notification)
-									<a class="d-flex p-3 border-bottom" href="#">
+									<a class="d-flex p-3 border-bottom" href="{{ route('update.daily.status.request', encrypt($notification->id)) }}">
 										<div class="ml-3">
 											@if (Auth::guard('admin')->check())
 												<h5 class="notification-label mb-1">

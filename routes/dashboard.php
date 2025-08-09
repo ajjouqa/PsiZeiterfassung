@@ -47,7 +47,7 @@ Route::prefix('azubi')->middleware(['auth:azubi'])->group(function () {
     Route::get('dashboard',[DashboardController::class,'AzubiDashboard'])->name('azubi.dashboard');
     Route::get('dashboard/presence/{userType}/{userId}', [XmppPresenceController::class, 'showPresenceLogs'])->name('xmpp.presence.logs.azubi');
     Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily.azubi');
-    Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.azubi');
+    Route::get('/generate-daily-presence-pdf/{userType}/{userId}/{month}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.azubi');
     
 
     Route::post('request-a-modification', [StatusChangeRequestController::class, 'store'])->name('request.a.modification.azubi');
@@ -60,9 +60,10 @@ Route::prefix('azubi')->middleware(['auth:azubi'])->group(function () {
 Route::prefix('mitarbeiter')->middleware(['auth:web'])->group(function () {
     Route::get('dashboard',[DashboardController::class,'MitarbeiterDashboard'])->name('mitarbeiter.dashboard');
     Route::get('dashboard/presence/{userType}/{userId}', [XmppPresenceController::class, 'showPresenceLogs'])->name('xmpp.presence.logs.mitarbeiter');
-    Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily.mitarbeiterter');
-    Route::get('/generate-daily-presence-pdf/{userType}/{userId}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.mitarbeiter');
+    Route::get('dashboard/dailyPresence/{userType}/{userId}', [XmppPresenceController::class, 'showDailySummaries'])->name('xmpp.presence.daily.mitarbeiter');
+    Route::get('/generate-daily-presence-pdf/{userType}/{userId}/{month}', [XmppPresenceController::class, 'generateDailyPresencePDF'])->name('generate.daily.presence.pdf.mitarbeiter');
 
+    Route::post('request-a-modification', [StatusChangeRequestController::class, 'store'])->name('request.a.modification.mitarbeiter');
     Route::post('xmpp-heartbeat', [XmppHeartbeatController::class, 'update']);
     Route::post('xmpp-disconnect', [XmppHeartbeatController::class, 'disconnect']);
 });
